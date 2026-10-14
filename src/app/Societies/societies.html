@@ -66,6 +66,8 @@
           <th>Landmark</th>
           <th>Sector</th>
           <th>Plot No</th>
+          <th>Staff Name</th>
+          <th>Staff Phone Number</th>
           <th>Created Date</th>
           <th>Action</th>
 
@@ -172,6 +174,34 @@
     </ng-container>
   </ng-container>
           </td>
+
+               <td>
+              <ng-container
+    *ngFor="let part of highlightParts(society.staff_Name )"
+  >
+    <span
+      *ngIf="part.match"
+      class="search-highlight"
+    >
+      {{ part.text }}
+    </span>
+
+    <ng-container *ngIf="!part.match">
+      {{ part.text }}
+    </ng-container>
+  </ng-container>
+          </td>
+<td>
+    <ng-container *ngFor="let part of highlightParts(society.staff_Phone_Number != null ? society.staff_Phone_Number.toString() : '')">
+        <span *ngIf="part.match" class="search-highlight">
+            {{ part.text }}
+        </span>
+
+        <ng-container *ngIf="!part.match">
+            {{ part.text }}
+        </ng-container>
+    </ng-container>
+</td>
 
          <td>
   <ng-container
@@ -324,4 +354,3 @@
   </div>
 
 </div>
-```

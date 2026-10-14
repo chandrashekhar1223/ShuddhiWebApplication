@@ -1,3 +1,4 @@
+
 .page-container {
   padding: 25px;
   background-color: #f8f9fa;
@@ -59,13 +60,10 @@
   height: 42px;
   padding: 8px 12px;
   box-sizing: border-box;
-
   border: 1px solid #ced4da;
   border-radius: 6px;
-
   font-size: 14px;
   color: #212529;
-
   outline: none;
   transition: border-color 0.2s;
 }
@@ -103,22 +101,42 @@
   padding: 10px 20px;
   font-size: 14px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
+/* Save Button - Default Disabled Appearance */
 .save-btn {
-  background-color: #198754;
-  color: #ffffff;
-}
-
-.save-btn:hover {
-  background-color: #157347;
-}
-
-.save-btn:disabled {
-  background-color: #adb5bd;
+  background-color: #adb5bd !important;
+  color: #ffffff !important;
+  min-width: 120px;
+  min-height: 38px;
   cursor: not-allowed;
+  opacity: 1 !important;
+  white-space: nowrap;
+  transition: none;
 }
 
+/* Save Button - Disabled */
+.save-btn:disabled {
+  background-color: #adb5bd !important;
+  color: #ffffff !important;
+  cursor: not-allowed;
+  opacity: 1 !important;
+}
+
+/* Save Button - Enabled Only After Form Valid */
+.save-btn.is-enabled:not(:disabled) {
+  background-color: #198754 !important;
+  color: #ffffff !important;
+  cursor: pointer;
+}
+
+/* Save Button - Enabled Hover */
+.save-btn.is-enabled:not(:disabled):hover {
+  background-color: #157347 !important;
+}
+
+/* Cancel Button */
 .cancel-btn {
   background-color: #6c757d;
   color: #ffffff;
@@ -128,6 +146,7 @@
   background-color: #5c636a;
 }
 
+/* Back Button */
 .back-btn {
   background-color: #343a40;
   color: #ffffff;
@@ -139,7 +158,6 @@
 
 /* Mobile */
 @media (max-width: 768px) {
-
   .page-container {
     padding: 15px;
   }
@@ -161,4 +179,17 @@
   .back-btn {
     width: 100%;
   }
+}
+
+/* Remove number input arrows in Chrome, Edge and Safari */
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove number input arrows in Firefox */
+.no-spinner {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }

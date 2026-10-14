@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://smart-force.in/Shuddhi/api'
+  apiUrl: 'https://localhost:7227/api'
 };
 

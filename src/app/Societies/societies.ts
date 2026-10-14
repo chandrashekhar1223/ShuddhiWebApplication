@@ -128,11 +128,11 @@ changePageSize(): void {
   });
 
   constructor(private societyService: SocietyService,  private router: Router) {
-    
+
   }
 
   ngOnInit(): void {
-    
+
     // Load all societies when page opens
     this.loadSocieties();
       // Search whenever user types
@@ -288,6 +288,20 @@ searchSocieties(searchText: string): void {
       (society.plot_No || '')
         .toLowerCase()
         .includes(search)
+
+        ||
+
+          (society.staff_Name || '')
+        .toLowerCase()
+        .includes(search)
+
+        ||
+
+         String(society.staff_Phone_Number ?? '')
+    .toLowerCase()
+    .includes(search)
+
+
     );
 
   });

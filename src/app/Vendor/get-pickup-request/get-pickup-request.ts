@@ -40,10 +40,6 @@ interface AssignVendorRequest {
 export class GetPickupRequest implements OnInit {
 
 
-
-  
-
-
 searchForm!: FormGroup;
 
 searchControl = new FormControl('');
@@ -210,24 +206,23 @@ this.createRequestForms();
 
   }
 
-  
-
 
    // =====================================================
   // PAGINATED REQUESTS
   // =====================================================
-
 get paginatedRequests(): any[] {
-  const groupedRequests = this.groupPickupRequests(
-    this.filteredRequests
+
+  const start =
+    (this.currentPage - 1) * this.pageSize;
+
+  const end =
+    start + this.pageSize;
+
+  return this.filteredRequests.slice(
+    start,
+    end
   );
-
-  const start = (this.currentPage - 1) * this.pageSize;
-  const end = start + this.pageSize;
-
-  return groupedRequests.slice(start, end);
 }
-
 
 
   // =====================================================
@@ -398,181 +393,44 @@ get startItem(): number {
 }
 
 
+assignVendor(item: PickupRequest): void {
+debugger;
+ // if (!item.selectedVendor?.Vendor_Id) {
+ //   alert('Please select a vendor.');
+ //   return;
+//  }
 
-/*assignVendor(item: PickupRequest): void {
+console.log('Selected Vendor:', item.selectedVendor);
+console.log('Selected Vendor JSON:', JSON.stringify(item.selectedVendor));
 
-  debugger;
-  const form = this.getRequestForm(item.pickupRequestId);
-  const selectedVendor = form.get('selectedVendor')?.value;
-
-  if (!selectedVendor?.vendor_Id) {
+  if (item.selectedVendor === null || item.selectedVendor === undefined) {
     alert('Please select a vendor.');
     return;
   }
 
-
+  //const selectedVendor = item.selectedVendor?.vendor_Id;
   
 
-  const currentWasteType = Number(item.wasteTypeId);
-  const currentPincode = String(item.pincode ?? '').trim();
+  const request: AssignVendorRequest = {
+   vendor_Id: String(item.selectedVendor.vendor_Id),
+    request_Id: String(item.pickupRequestId),
+   pickupDateTime: String(item.pickupDateTime),
+   WasteType_Id:Number(item.wasteTypeId)
+};
 
-  const currentIndex = this.filteredRequests.findIndex(
-    request =>
-      request.pickupRequestId === item.pickupRequestId
-  );
+  console.log('Assign Request:', request);
 
-  if (currentIndex === -1) {
-    alert('Pickup request not found.');
-    return;
-  }
-
-  // Find the beginning of this consecutive group
-  let start = currentIndex;
-
-  while (start > 0) {
-    const previous = this.filteredRequests[start - 1];
-
-    if (
-      Number(previous.wasteTypeId) !== currentWasteType ||
-      String(previous.pincode ?? '').trim() !== currentPincode
-    ) {
-      break;
-    }
-
-    start--;
-  }
-
-  // Find the end of this consecutive group
-  let end = currentIndex;
-
-  while (end < this.filteredRequests.length - 1) {
-    const next = this.filteredRequests[end + 1];
-
-    if (
-      Number(next.wasteTypeId) !== currentWasteType ||
-      String(next.pincode ?? '').trim() !== currentPincode
-    ) {
-      break;
-    }
-
-    end++;
-  }
-
-  // Collect every request in this group
-  const requests = this.filteredRequests
-    .slice(start, end + 1)
-    .map(request => ({
-      vendor_Id: String(selectedVendor.vendor_Id),
-      request_Id: String(request.pickupRequestId),
-      pickupDateTime: String(request.pickupDateTime),
-      WasteType_Id: Number(request.wasteTypeId)
-    }));
-
-  console.log('Requests being assigned:', requests);
-
-  this.pickupRequestService.assignVendor(requests).subscribe({
-    next: response => {
+  this.pickupRequestService.assignVendor(request).subscribe({
+    next: (response) => {
       console.log('Assign Response:', response);
-      alert('Vendor assignment completed. Check the response for details.');
+      alert(response);
     },
-    error: error => {
+    error: (error) => {
       console.error('Assign Error:', error);
       alert('Failed to assign vendor.');
     }
   });
-}*/
-
-assignVendor(item: PickupRequest): void {
-
-  const form = this.getRequestForm(item.pickupRequestId);
-  const selectedVendor = form.get('selectedVendor')?.value;
-
-  if (!selectedVendor?.vendor_Id) {
-    alert('Please select a vendor.');
-    return;
-  }
-
-  // Use the same sorted and grouped list displayed in the table.
-  const displayedRequests = this.groupPickupRequests(
-    this.filteredRequests
-  );
-
-  // Find the selected request.
-  const currentIndex = displayedRequests.findIndex(
-    request =>
-      Number(request.pickupRequestId) ===
-      Number(item.pickupRequestId)
-  );
-
-  if (currentIndex === -1) {
-    alert('Pickup request not found.');
-    return;
-  }
-
-  // Use your existing grouping rule without changing it.
-  let start = currentIndex;
-
-  while (
-    start > 0 &&
-    this.isSameGroup(
-      displayedRequests[start - 1],
-      displayedRequests[currentIndex]
-    )
-  ) {
-    start--;
-  }
-
-  let end = currentIndex;
-
-  while (
-    end < displayedRequests.length - 1 &&
-    this.isSameGroup(
-      displayedRequests[end + 1],
-      displayedRequests[currentIndex]
-    )
-  ) {
-    end++;
-  }
-
-  // Collect all requests belonging to this group.
-  const requests: AssignVendorRequest[] =
-    displayedRequests.slice(start, end + 1).map(request => {
-
-      const requestForm = this.getRequestForm(
-        request.pickupRequestId
-      );
-
-      return {
-        vendor_Id: String(selectedVendor.vendor_Id),
-
-        request_Id: String(request.pickupRequestId),
-
-        pickupDateTime: String(
-          requestForm.get('pickupDateTime')?.value ?? ''
-        ),
-
-        WasteType_Id: Number(request.wasteTypeId)
-      };
-    });
-
-  console.log('Grouped requests:', requests);
-
-  this.pickupRequestService.assignVendor(requests).subscribe({
-    next: response => {
-      console.log('Assign response:', response);
-
-      alert(
-        `Vendor assignment completed for ${requests.length} request(s).`
-      );
-    },
-
-    error: error => {
-      console.error('Assign error:', error);
-      alert('Failed to assign vendor.');
-    }
-  });
 }
-
 
 
 
@@ -735,7 +593,37 @@ highlightParts(value: any): { text: string; match: boolean }[] {
 
 
 
+showVendorDropdown(item: any, index: number): boolean {
+  const currentWasteType = Number(item.wasteTypeId);
+  const currentPincode = String(item.pincode ?? '').trim();
 
+  const isSameGroup = (request: any) =>
+    Number(request.wasteTypeId) === currentWasteType &&
+    String(request.pincode ?? '').trim() === currentPincode;
+
+  // Find the beginning of the consecutive group
+  let start = index;
+  while (
+    start > 0 &&
+    isSameGroup(this.filteredRequests[start - 1])
+  ) {
+    start--;
+  }
+
+  // Find the end of the consecutive group
+  let end = index;
+  while (
+    end < this.filteredRequests.length - 1 &&
+    isSameGroup(this.filteredRequests[end + 1])
+  ) {
+    end++;
+  }
+
+  // Display only on the middle row
+  const middleIndex = Math.floor((start + end) / 2);
+
+  return index === middleIndex;
+}
 
 getVendorDropdownGroupStart(item: any, index: number): number {
   const sameGroup = (request: any) =>
@@ -754,210 +642,6 @@ getVendorDropdownGroupStart(item: any, index: number): number {
 
   return start;
 }
-
-
-
-
-private isSameVendorGroup(
-  first: PickupRequest,
-  second: PickupRequest
-): boolean {
-  return (
-    this.normalizeStatus(first.status) ===
-      this.normalizeStatus(second.status) &&
-    this.normalizeGroupValue(first.society_Id) ===
-      this.normalizeGroupValue(second.society_Id) &&
-    this.normalizeGroupValue(first.pincode) ===
-      this.normalizeGroupValue(second.pincode)
-  );
-}
-
-/*showVendorDropdown(item: PickupRequest): boolean {
-  const requests = this.filteredRequests;
-
-  const currentIndex = requests.findIndex(
-    request =>
-      request.pickupRequestId === item.pickupRequestId
-  );
-
-  if (currentIndex === -1) {
-    return false;
-  }
-
-  // Find the start of this consecutive group.
-  let start = currentIndex;
-
-  while (start > 0) {
-    if (
-      !this.isSameVendorGroup(
-        requests[start - 1],
-        requests[currentIndex]
-      )
-    ) {
-      break;
-    }
-
-    start--;
-  }
-
-  // Find the end of this consecutive group.
-  let end = currentIndex;
-
-  while (end < requests.length - 1) {
-    if (
-      !this.isSameVendorGroup(
-        requests[end + 1],
-        requests[currentIndex]
-      )
-    ) {
-      break;
-    }
-
-    end++;
-  }
-
-  // Show one dropdown in the middle of the group.
-  const middleIndex = Math.floor((start + end) / 2);
-
-  return currentIndex === middleIndex;
-}*/
-
-
-private getGroupKey(item: PickupRequest): string {
-  return [
-    (item.status || 'Pending').trim().toLowerCase(),
-    String(item.society_Id ?? '').trim(),
-    String(item.wasteTypeId ?? '').trim(),
-    String(item.pincode ?? '').trim()
-  ].join('|');
-}
-
-showVendorDropdown(item: PickupRequest): boolean {
-  const index = this.paginatedRequests.indexOf(item);
-
-  if (index === -1) {
-    return false;
-  }
-
-  if (index === 0) {
-    return true;
-  }
-
-  return !this.isSameGroup(
-    this.paginatedRequests[index - 1],
-    item
-  );
-}
-
-
-isSameGroupAsPrevious(item: PickupRequest): boolean {
-  const index = this.filteredRequests.findIndex(
-    x => x.pickupRequestId === item.pickupRequestId
-  );
-
-  if (index <= 0) {
-    return false;
-  }
-
-  const previous = this.filteredRequests[index - 1];
-
-  return (
-    (item.status || 'Pending').trim().toLowerCase() ===
-      (previous.status || 'Pending').trim().toLowerCase() &&
-    String(item.society_Id ?? '') === String(previous.society_Id ?? '') &&
-    String(item.wasteTypeId ?? '') === String(previous.wasteTypeId ?? '') &&
-    String(item.pincode ?? '') === String(previous.pincode ?? '')
-  );
-}
-
-
-private normalizeGroupValue(value: unknown): string {
-  return String(value ?? '').trim().toLowerCase();
-}
-
-private normalizeStatus(status: unknown): string {
-  const value = this.normalizeGroupValue(status);
-
-  return value === '' || value === 'null'
-    ? 'pending'
-    : value;
-}
-
-isSameGroup(
-  previous: PickupRequest,
-  current: PickupRequest
-): boolean {
-  return (
-    this.normalizeStatus(previous.status) ===
-      this.normalizeStatus(current.status) &&
-
-    this.normalizeGroupValue(previous.society_Id) ===
-      this.normalizeGroupValue(current.society_Id) &&
-
-    this.normalizeGroupValue(previous.wasteTypeId) ===
-      this.normalizeGroupValue(current.wasteTypeId) &&
-
-    this.normalizeGroupValue(previous.pincode) ===
-      this.normalizeGroupValue(current.pincode)
-  );
-}
-
-
-getPickupGroupKey(item: PickupRequest): string {
-  const status = (item.status ?? '').trim().toLowerCase();
-
-  return [
-    !status || status === 'null' ? 'pending' : status,
-    String(item.society_Id ?? '').trim(),
-    String(item.wasteTypeId ?? '').trim(),
-    String(item.pincode ?? '').trim()
-  ].join('|');
-}
-
-groupPickupRequests(requests: PickupRequest[]): PickupRequest[] {
-  return [...requests].sort((a, b) =>
-    this.getPickupGroupKey(a).localeCompare(
-      this.getPickupGroupKey(b),
-      undefined,
-      { numeric: true }
-    )
-  );
-}
-
-onPickupDateTimeChange(
-  item: PickupRequest,
-  pickupDateTime: string
-): void {
-
-  // Update every request having the same grouping criteria.
-  const groupRequests = this.filteredRequests.filter(request =>
-    this.isSameGroup(item, request)
-  );
-
-  for (const request of groupRequests) {
-
-    const requestForm = this.getRequestForm(
-      request.pickupRequestId
-    );
-
-    requestForm.patchValue(
-      {
-        pickupDateTime: pickupDateTime
-      },
-      { emitEvent: false }
-    );
-  }
-
-  console.log(
-    'Pickup date applied to group:',
-    groupRequests.map(request => ({
-      pickupRequestId: request.pickupRequestId,
-      pickupDateTime: pickupDateTime
-    }))
-  );
-}
-
-
 
 
 

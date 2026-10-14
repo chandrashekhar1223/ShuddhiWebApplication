@@ -20,4 +20,5 @@ describe('Insertsociety', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

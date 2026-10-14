@@ -168,14 +168,10 @@
 
         @for (
           item of paginatedRequests;
-          track item.pickupRequestId; let i = $index) {
+          track item.pickupRequestId
+        ) {
 
-             <tr
-      [class.grouped-row]="
-        i > 0 &&
-        isSameGroup(paginatedRequests[i - 1], item)
-      "
-    >
+          <tr>
 
             <!-- ================================================= -->
             <!-- PICKUP REQUEST ID -->
@@ -519,8 +515,8 @@
             <!-- ================================================= -->
 
 
-<!--<td>
-  @if (showVendorDropdown(item)) {
+<td>
+  @if (showVendorDropdown(item, $index)) {
     <form [formGroup]="getRequestForm(item.pickupRequestId)">
       <select
         class="form-select vendor-select"
@@ -532,28 +528,6 @@
         @for (vendor of vendors; track vendor.vendor_Id) {
           <option [ngValue]="vendor">
             {{ vendor.vendor_Id }} - {{ vendor.vendorName }} - {{ vendor.wasteType }}
-          </option>
-        }
-      </select>
-    </form>
-  }
-</td>-->
-
-<td>
-  @if (showVendorDropdown(item)) {
-    <form [formGroup]="getRequestForm(item.pickupRequestId)">
-      <select
-        class="form-select vendor-select"
-        formControlName="selectedVendor"
-        (focus)="loadVendors(item.pincode, item.wasteTypeId)"
-      >
-        <option [ngValue]="null">Select Vendor</option>
-
-        @for (vendor of vendors; track vendor.vendor_Id) {
-          <option [ngValue]="vendor">
-            {{ vendor.vendor_Id }} -
-            {{ vendor.vendorName }} -
-            {{ vendor.wasteType }}
           </option>
         }
       </select>
@@ -587,21 +561,15 @@
                 [formGroup]="getRequestForm(item.pickupRequestId)"
               >
 
-               
-<input
-  type="datetime-local"
-  class="form-control pickup-date-input"
-  formControlName="pickupDateTime"
-  (change)="onPickupDateTimeChange(
-    item,
-    $any($event.target).value
-  )"
-  [disabled]="
-    !getRequestForm(item.pickupRequestId)
-      .get('selectedVendor')?.value
-  "
-/>
-
+                <input
+                  type="datetime-local"
+                  class="form-control pickup-date-input"
+                  formControlName="pickupDateTime"
+                  [disabled]="
+                    !getRequestForm(item.pickupRequestId)
+                      .get('selectedVendor')?.value
+                  "
+                />
 
               </form>
 

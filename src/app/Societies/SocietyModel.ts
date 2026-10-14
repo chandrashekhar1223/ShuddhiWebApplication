@@ -6,4 +6,6 @@ export interface Society {
   sector?: string;
   plot_No?: string;
   created_Date?: string;
+  Staff_Name?: string;
+  Staff_Phone_Number?:number;
 }

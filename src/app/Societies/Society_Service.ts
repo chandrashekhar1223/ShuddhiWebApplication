@@ -10,6 +10,8 @@ export interface Society {
   landmark?: string;
   sector?: string;
   plot_No?: string;
+  staff_Name?:string;
+  staff_Phone_Number:number;
   created_Date?: string;
 }
 

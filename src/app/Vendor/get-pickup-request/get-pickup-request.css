@@ -920,20 +920,3 @@
   cursor: pointer;
   vertical-align: middle;
 }
-.grouped-row td {
-  border-top: none;
-}
-
-.grouped-row td {
-  background-color: #f8fafc;
-}
-
-.grouped-row td {
-  border-top: none !important;
-  background-color: #f1f5f9;
-}
-
-/* Separate one group from the next */
-.pickup-table tbody tr:not(.grouped-row) td {
-  border-top: 2px solid #cbd5e1;
-}

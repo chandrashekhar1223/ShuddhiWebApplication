@@ -61,8 +61,16 @@ export class Insertsociety {
 
       Plot_No: [
         ''
-      ]
+      ],
 
+  Staff_Name: [
+        ''
+      ],
+
+   Staff_Phone_Number: [
+       null
+
+      ],
     });
   }
 
@@ -84,13 +92,15 @@ export class Insertsociety {
       Pincode: society.pincode,
       Landmark: society.landmark,
       Sector: society.sector,
-      Plot_No: society.plot_No
+      Plot_No: society.plot_No,
+      Staff_Name:society.staff_Name,
+      Staff_Phone_Number:society.staff_Phone_Number
 
     });
 
   }
 }
-  
+
 
   get f() {
     return this.societyForm.controls;
@@ -117,7 +127,9 @@ export class Insertsociety {
 
       Sector: this.societyForm.value.Sector,
 
-      Plot_No: this.societyForm.value.Plot_No
+      Plot_No: this.societyForm.value.Plot_No,
+      Staff_Name:this.societyForm.value.Staff_Name,
+      Staff_Phone_Number:this.societyForm.value.Staff_Phone_Number
 
     };
       // Add Id only when editing
