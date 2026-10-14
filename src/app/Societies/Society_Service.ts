@@ -20,7 +20,7 @@ export interface Society {
 })
 export class SocietyService {
 
-  private apiUrl = 'https://localhost:7227/api/Society';
+  private apiUrl = 'https://smart-force.in/Shuddhi/api/Society';
 
   constructor(private http: HttpClient) {}
 
