@@ -4,11 +4,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
+       "rootDir": "./src",
     "types": []
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/Waste_Category/waste-category/Waste_Category_Service.ts"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

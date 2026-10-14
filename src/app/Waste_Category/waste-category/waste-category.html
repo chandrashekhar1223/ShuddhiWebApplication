@@ -1,0 +1,57 @@
+<div class="container mt-4">
+
+  <h3>Waste Categories</h3>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-muted">
+    Loading waste categories...
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Waste Type List -->
+  <div
+    *ngFor="let waste of wasteTypes; let i = index"
+    class="waste-category mb-4">
+
+    <!-- Waste Type -->
+    <div class="waste-type-title">
+      <span class="waste-type-number">
+        {{ i + 1 }}
+      </span>
+
+      <strong>
+        {{ waste.wasteType }}
+      </strong>
+
+      <span class="waste-type-id">
+        ID: {{ waste.wasteTypeId }}
+      </span>
+    </div>
+
+
+    <!-- Sub Waste Types -->
+    <div class="sub-waste-list">
+
+      <div
+        *ngFor="let subWaste of waste.subWasteTypes"
+        class="sub-waste-item">
+
+        <span class="sub-waste-id">
+          {{ subWaste.wasteSubTypeId }}
+        </span>
+
+        <span>
+          {{ subWaste.wasteSubType }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

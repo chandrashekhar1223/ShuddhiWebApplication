@@ -1,0 +1,327 @@
+
+<div class="society-container">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+      <h2>Societies</h2>
+      <p>Manage society information</p>
+    </div>
+
+    <button
+      type="button"
+      class="add-btn"
+      routerLink="/add-society">
+
+      <i class="pi pi-plus"></i>
+      Add Society
+
+    </button>
+
+  </div>
+
+
+  <!-- Search -->
+  <form [formGroup]="searchForm" class="search-section">
+
+    <div class="search-box">
+
+      <i class="pi pi-search"></i>
+
+      <input
+        type="text"
+        formControlName="search"
+        placeholder="Search society, pincode, sector..." />
+
+    </div>
+
+  </form>
+
+
+  <!-- Loading -->
+  <div
+    class="loading"
+    *ngIf="loading">
+
+    Loading societies...
+
+  </div>
+
+
+  <!-- Table -->
+  <div
+    class="table-container"
+    *ngIf="!loading">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Id</th>
+          <th>Society Name</th>
+          <th>Pincode</th>
+          <th>Landmark</th>
+          <th>Sector</th>
+          <th>Plot No</th>
+          <th>Created Date</th>
+          <th>Action</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr
+          *ngFor="let society of paginatedSocieties; let i = index">
+
+          <!-- Serial number -->
+          <td>
+            {{ (currentPage - 1) * pageSize + i + 1 }}
+          </td>
+
+          <td class="society-name">
+
+            <i class="pi pi-building"></i>
+
+             <ng-container
+    *ngFor="let part of highlightParts(society.society_Name)"
+  >
+    <span
+      *ngIf="part.match"
+      class="search-highlight"
+    >
+      {{ part.text }}
+    </span>
+
+    <ng-container *ngIf="!part.match">
+      {{ part.text }}
+    </ng-container>
+  </ng-container>
+
+          </td>
+
+          <td>
+           <ng-container
+    *ngFor="let part of highlightParts(society.pincode)"
+  >
+    <span
+      *ngIf="part.match"
+      class="search-highlight"
+    >
+      {{ part.text }}
+    </span>
+
+    <ng-container *ngIf="!part.match">
+      {{ part.text }}
+    </ng-container>
+  </ng-container>
+          </td>
+
+          <td>
+           <ng-container
+    *ngFor="let part of highlightParts(society.landmark)"
+  >
+    <span
+      *ngIf="part.match"
+      class="search-highlight"
+    >
+      {{ part.text }}
+    </span>
+
+    <ng-container *ngIf="!part.match">
+      {{ part.text }}
+    </ng-container>
+  </ng-container>
+          </td>
+
+          <td>
+           <ng-container
+    *ngFor="let part of highlightParts(society.sector)"
+  >
+    <span
+      *ngIf="part.match"
+      class="search-highlight"
+    >
+      {{ part.text }}
+    </span>
+
+    <ng-container *ngIf="!part.match">
+      {{ part.text }}
+    </ng-container>
+  </ng-container>
+          </td>
+
+          <td>
+              <ng-container
+    *ngFor="let part of highlightParts(society.plot_No)"
+  >
+    <span
+      *ngIf="part.match"
+      class="search-highlight"
+    >
+      {{ part.text }}
+    </span>
+
+    <ng-container *ngIf="!part.match">
+      {{ part.text }}
+    </ng-container>
+  </ng-container>
+          </td>
+
+         <td>
+  <ng-container
+    *ngFor="let part of highlightParts(society.created_Date)"
+  >
+    <span
+      *ngIf="part.match"
+      class="search-highlight"
+    >
+      {{ part.text }}
+    </span>
+
+    <ng-container *ngIf="!part.match">
+      {{ part.text }}
+    </ng-container>
+  </ng-container>
+</td>
+
+          <td>
+
+            <button
+              type="button"
+              class="action-btn edit"
+              (click)="editSociety(society)"
+              title="Edit">
+
+              <i class="pi pi-pencil"></i>
+
+            </button>
+
+            <button
+              type="button"
+              class="action-btn delete"
+              (click)="deleteSociety(society)"
+              title="Delete">
+
+              <i class="pi pi-trash"></i>
+
+            </button>
+
+          </td>
+
+        </tr>
+
+
+        <!-- No data -->
+        <tr *ngIf="paginatedSocieties.length === 0">
+
+          <td
+            colspan="8"
+            class="no-data">
+
+            <i class="pi pi-building"></i>
+
+            <p>No societies found</p>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+
+    <!-- Pagination -->
+    <div
+      class="pagination"
+      *ngIf="societies.length > 0">
+
+      <div class="pagination-info">
+
+        Showing
+        <strong>
+          {{ (currentPage - 1) * pageSize + 1 }}
+        </strong>
+
+        -
+        <strong>
+          {{ Math.min(currentPage * pageSize, societies.length) }}
+        </strong>
+
+        of
+        <strong>{{ societies.length }}</strong>
+
+      </div>
+
+
+      <div class="pagination-controls">
+
+        <!-- Previous -->
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="currentPage === 1"
+          (click)="previousPage()">
+
+          <i class="pi pi-angle-left"></i>
+
+        </button>
+
+
+        <!-- Page numbers -->
+        <button
+          type="button"
+          class="pagination-number"
+          *ngFor="let page of pages"
+          [class.active]="currentPage === page"
+          (click)="goToPage(page)">
+
+          {{ page }}
+
+        </button>
+
+
+        <!-- Next -->
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="nextPage()">
+
+          <i class="pi pi-angle-right"></i>
+
+        </button>
+
+      </div>
+
+
+      <!-- Page size -->
+      <div class="page-size">
+
+        <label>Rows:</label>
+
+        <select
+          [(ngModel)]="pageSize"
+          (change)="changePageSize()">
+
+          <option [ngValue]="5">5</option>
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+```

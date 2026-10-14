@@ -1,0 +1,12 @@
+export interface PickupRequest {
+  pickupRequestId: number;
+  userId: number;
+  address: string;
+  note: string;
+  totalEstimatedWaste: number;
+  pickupDateTime: Date;
+  latitude: number;
+  longitude: number;
+  createdDate: Date;
+  status: boolean | null;
+}

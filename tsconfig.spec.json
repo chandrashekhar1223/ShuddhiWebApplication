@@ -10,5 +10,5 @@
   },
   "include": [
     "src/**/*.ts"
-  ]
+, "src/app/Waste_Category/waste-category/Waste_Category_Service.ts"  ]
 }

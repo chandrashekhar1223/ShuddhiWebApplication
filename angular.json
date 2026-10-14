@@ -25,11 +25,20 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+               "node_modules/primeicons/primeicons.css"
             ]
           },
           "configurations": {
             "production": {
+
+               "fileReplacements": [
+    {
+      "replace": "src/environments/environmentprod.ts",
+      "with": "src/environments/environmentlocal.ts"
+    }
+  ],
+
               "budgets": [
                 {
                   "type": "initial",
@@ -38,8 +47,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "20kB",
+                  "maximumError": "30kB"
                 }
               ],
               "outputHashing": "all"
@@ -50,13 +59,13 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Shuddhi:build:production"
+              "buildTarget": "Shuddhi:build:development"
             },
             "development": {
               "buildTarget": "Shuddhi:build:development"

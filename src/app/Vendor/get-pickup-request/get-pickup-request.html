@@ -1,0 +1,843 @@
+<div class="pickup-card">
+
+  <!-- ========================================================= -->
+  <!-- HEADER -->
+  <!-- ========================================================= -->
+
+  <div class="pickup-header">
+
+    <div>
+      <h4>Pickup Requests</h4>
+
+      <p>
+        Manage and review pending pickup requests
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <span class="request-count">
+        {{ filteredRequests.length }} Requests
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- SINGLE GLOBAL SEARCH -->
+  <!-- ========================================================= -->
+
+<div class="pickup-toolbar">
+
+  <div class="pickup-search">
+    <i class="pi pi-search search-icon"></i>
+
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Search pickup requests..."
+      [formControl]="searchControl"
+    />
+
+    @if (searchControl.value) {
+      <button
+        type="button"
+        class="clear-search"
+        (click)="clearSearch()"
+        title="Clear search"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    }
+  </div>
+
+  <div class="search-result-count">
+    <span>
+      {{ filteredRequests.length }}
+    </span>
+    {{ filteredRequests.length === 1 ? 'request' : 'requests' }}
+  </div>
+
+</div>
+
+  <!-- ========================================================= -->
+  <!-- TABLE -->
+  <!-- ========================================================= -->
+
+  <div class="table-responsive pickup-table-wrapper">
+
+    <table class="table table-hover align-middle pickup-table">
+
+      <!-- ===================================================== -->
+      <!-- TABLE HEADER -->
+      <!-- ===================================================== -->
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Pickup Request ID
+          </th>
+
+          <th>
+            Name
+          </th>
+
+          <th>
+            Photo
+          </th>
+
+          <th>
+            Quantity
+          </th>
+
+          <th>
+            Status
+          </th>
+
+          <th>
+            Address
+          </th>
+
+          <th>
+            Society
+          </th>
+
+          <th>
+            Society_Id
+          </th>
+
+          <th>
+            Waste Type
+          </th>
+
+          <th>
+            Sub Waste Type
+          </th>
+
+          <th>
+            Note
+          </th>
+
+          <th>
+            Latitude
+          </th>
+
+          <th>
+            Longitude
+          </th>
+
+          <th>
+            Total Estimated Waste
+          </th>
+
+          <th>
+            Created Date
+          </th>
+
+          
+          <th>
+            Select Vendor
+          </th>
+
+          <th>
+            Pincode
+          </th>
+
+          <th>
+            Pickup Date
+          </th>
+
+          <th>
+            Assign
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <!-- ===================================================== -->
+      <!-- TABLE BODY -->
+      <!-- ===================================================== -->
+
+      <tbody>
+
+        @for (
+          item of paginatedRequests;
+          track item.pickupRequestId; let i = $index) {
+
+             <tr
+      [class.grouped-row]="
+        i > 0 &&
+        isSameGroup(paginatedRequests[i - 1], item)
+      "
+    >
+
+            <!-- ================================================= -->
+            <!-- PICKUP REQUEST ID -->
+            <!-- ================================================= -->
+
+            <td>
+
+             <span class="pickup-request-id">
+  @for (part of highlightParts(item.pickupRequestId); track $index) {
+    @if (part.match) {
+      <span class="search-highlight">{{ part.text }}</span>
+    } @else {
+      {{ part.text }}
+    }
+  }
+</span>
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- NAME -->
+            <!-- ================================================= -->
+
+            <td>
+
+            <span class="pickup-id">
+  @for (part of highlightParts(item.name || 'N/A'); track $index) {
+    @if (part.match) {
+      <span class="search-highlight">{{ part.text }}</span>
+    } @else {
+      {{ part.text }}
+    }
+  }
+</span>
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- PHOTO -->
+            <!-- ================================================= -->
+
+            <td>
+
+              @if (item.photoPath) {
+
+                <a
+                  [href]="'https://smart-force.in/Shuddhi/' + item.photoPath"
+                  target="_blank"
+                  rel="noopener noreferrer">
+
+                  <i class="pi pi-image"></i>
+
+                  View Photo
+
+                </a>
+
+              }
+
+              @else {
+
+                <span class="text-muted">
+                  No Photo
+                </span>
+
+              }
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- QUANTITY -->
+            <!-- ================================================= -->
+
+           <td>
+  @for (part of highlightParts(item.quantity ?? 0); track $index) {
+    @if (part.match) {
+      <span class="search-highlight">{{ part.text }}</span>
+    } @else {
+      {{ part.text }}
+    }
+  }
+</td>
+
+
+            <!-- ================================================= -->
+            <!-- STATUS -->
+            <!-- ================================================= -->
+
+            <td>
+
+              @if (
+                item.status === null ||
+                item.status === 'Pending'
+              ) {
+
+               <span class="status-badge pending">
+  <i class="pi pi-clock"></i>
+
+  @for (part of highlightParts('Pending'); track $index) {
+    @if (part.match) {
+      <span class="search-highlight">{{ part.text }}</span>
+    } @else {
+      {{ part.text }}
+    }
+  }
+
+</span>
+
+              }
+
+              @else if (
+                item.status === 'Vendor_Assigned'
+              ) {
+
+                <span class="status-badge assigned">
+
+                  <i class="pi pi-user"></i>
+
+                  Vendor_Assigned
+
+                </span>
+
+              }
+
+              @else if (
+                item.status === 'Accepted'
+              ) {
+
+                <span class="status-badge approved">
+
+                  <i class="pi pi-check-circle"></i>
+
+                  Accepted
+
+                </span>
+
+              }
+
+              @else if (
+                item.status === 'Rejected'
+              ) {
+
+                <span class="status-badge rejected">
+
+                  <i class="pi pi-times-circle"></i>
+
+                  Rejected
+
+                </span>
+
+              }
+
+              @else if (
+                item.status === 'Collected'
+              ) {
+
+                <span class="status-badge completed">
+
+                  <i class="pi pi-check"></i>
+
+                  Completed
+
+                </span>
+
+              }
+
+              @else {
+
+                <span class="status-badge">
+
+                  {{ item.status || 'N/A' }}
+
+                </span>
+
+              }
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- ADDRESS -->
+            <!-- ================================================= -->
+
+           <td>
+  <div class="address-cell">
+    @for (part of highlightParts(item.address || 'N/A'); track $index) {
+      @if (part.match) {
+        <span class="search-highlight">{{ part.text }}</span>
+      } @else {
+        {{ part.text }}
+      }
+    }
+  </div>
+</td>
+
+
+            <!-- ================================================= -->
+            <!-- SOCIETY -->
+            <!-- ================================================= -->
+
+            <td>
+  @for (part of highlightParts(item.society || 'N/A'); track $index) {
+    @if (part.match) {
+      <span class="search-highlight">{{ part.text }}</span>
+    } @else {
+      {{ part.text }}
+    }
+  }
+</td>
+
+<!-- Society Id-->
+
+     <td>{{ item.society_Id ?? 'N/A' }}</td>
+
+            <!-- ================================================= -->
+            <!-- WASTE TYPE -->
+            <!-- ================================================= -->
+
+          <td>
+  @for (part of highlightParts(item.wasteTypeId || 'N/A'); track $index) {
+    @if (part.match) {
+      <span class="search-highlight">{{ part.text }}</span>
+    } @else {
+      {{ part.text }}
+    }
+  }
+</td>
+
+
+            <!-- ================================================= -->
+            <!-- SUB WASTE TYPE -->
+            <!-- ================================================= -->
+
+           <td>
+  @for (part of highlightParts(item.sub_Waste_Type || 'N/A'); track $index) {
+    @if (part.match) {
+      <span class="search-highlight">{{ part.text }}</span>
+    } @else {
+      {{ part.text }}
+    }
+  }
+</td>
+
+
+            <!-- ================================================= -->
+            <!-- NOTE -->
+            <!-- ================================================= -->
+
+           <td>
+  <div class="note-cell">
+    @for (part of highlightParts(item.note || 'No note'); track $index) {
+      @if (part.match) {
+        <span class="search-highlight">{{ part.text }}</span>
+      } @else {
+        {{ part.text }}
+      }
+    }
+  </div>
+</td>
+
+
+            <!-- ================================================= -->
+            <!-- LATITUDE -->
+            <!-- ================================================= -->
+
+            <td>
+
+              {{ item.latitude || 'N/A' }}
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- LONGITUDE -->
+            <!-- ================================================= -->
+
+            <td>
+
+              {{ item.longitude || 'N/A' }}
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- TOTAL ESTIMATED WASTE -->
+            <!-- ================================================= -->
+
+            <td>
+
+              <span class="waste-weight">
+
+                {{ item.totalEstimatedWaste ?? 0 }}
+
+              </span>
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- CREATED DATE -->
+            <!-- ================================================= -->
+
+            <td>
+
+              <div class="created-date">
+
+                <div>
+
+                  {{ item.createdDate | date:'dd/MM/yyyy' }}
+
+                </div>
+
+                <small>
+
+                  {{ item.createdDate | date:'hh:mm a' }}
+
+                </small>
+
+              </div>
+
+            </td>
+
+            <!-- SELECT CHECKBOX -->
+<!--<td class="text-center">
+  <input
+    type="checkbox"
+    class="form-check-input request-checkbox"
+    [checked]="selectedPincode === normalizePincode(item.pincode)"
+    (change)="onPincodeCheckboxChange(
+      item.pincode,
+      $any($event.target).checked
+    )"
+  />
+</td>-->
+           
+
+
+            <!-- ================================================= -->
+            <!-- SELECT VENDOR -->
+            <!-- ================================================= -->
+
+
+<!--<td>
+  @if (showVendorDropdown(item)) {
+    <form [formGroup]="getRequestForm(item.pickupRequestId)">
+      <select
+        class="form-select vendor-select"
+        formControlName="selectedVendor"
+        (focus)="loadVendors(item.pincode, item.wasteTypeId)"
+      >
+        <option [ngValue]="null">Select Vendor</option>
+
+        @for (vendor of vendors; track vendor.vendor_Id) {
+          <option [ngValue]="vendor">
+            {{ vendor.vendor_Id }} - {{ vendor.vendorName }} - {{ vendor.wasteType }}
+          </option>
+        }
+      </select>
+    </form>
+  }
+</td>-->
+
+<td>
+  @if (showVendorDropdown(item)) {
+    <form [formGroup]="getRequestForm(item.pickupRequestId)">
+      <select
+        class="form-select vendor-select"
+        formControlName="selectedVendor"
+        (focus)="loadVendors(item.pincode, item.wasteTypeId)"
+      >
+        <option [ngValue]="null">Select Vendor</option>
+
+        @for (vendor of vendors; track vendor.vendor_Id) {
+          <option [ngValue]="vendor">
+            {{ vendor.vendor_Id }} -
+            {{ vendor.vendorName }} -
+            {{ vendor.wasteType }}
+          </option>
+        }
+      </select>
+    </form>
+  }
+</td>
+
+
+            <!-- ================================================= -->
+            <!-- PINCODE -->
+            <!-- ================================================= -->
+
+            <td>
+
+              <span>
+
+                {{ item.pincode || 'N/A' }}
+
+              </span>
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- PICKUP DATE -->
+            <!-- ================================================= -->
+
+            <td>
+
+              <form
+                [formGroup]="getRequestForm(item.pickupRequestId)"
+              >
+
+               
+<input
+  type="datetime-local"
+  class="form-control pickup-date-input"
+  formControlName="pickupDateTime"
+  (change)="onPickupDateTimeChange(
+    item,
+    $any($event.target).value
+  )"
+  [disabled]="
+    !getRequestForm(item.pickupRequestId)
+      .get('selectedVendor')?.value
+  "
+/>
+
+
+              </form>
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- ASSIGN -->
+            <!-- ================================================= -->
+
+            <td>
+
+              <button
+                type="button"
+                class="btn btn-primary assign-btn"
+                (click)="assignVendor(item)"
+                [disabled]="
+                  !getRequestForm(item.pickupRequestId)
+                    .get('selectedVendor')?.value
+                "
+              >
+
+                <i class="pi pi-user-plus"></i>
+
+                Assign
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        }
+
+
+        <!-- ===================================================== -->
+        <!-- NO RECORDS -->
+        <!-- ===================================================== -->
+
+        @if (filteredRequests.length === 0) {
+
+          <tr>
+
+            <td
+              colspan="18"
+              class="empty-state"
+            >
+
+              <i class="pi pi-inbox"></i>
+
+
+              @if (pendingRequests.length === 0) {
+
+                <h5>
+                  No Pickup Requests
+                </h5>
+
+                <p>
+                  There are currently no pickup requests available.
+                </p>
+
+              }
+
+              @else {
+
+                <h5>
+                  No Matching Requests
+                </h5>
+
+                <p>
+                  No pickup requests match your search.
+                </p>
+
+
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="clearSearch()"
+                >
+
+                  <i class="pi pi-filter-slash"></i>
+
+                  Clear Search
+
+                </button>
+
+              }
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- PAGINATION -->
+  <!-- ========================================================= -->
+
+  @if (filteredRequests.length > 0) {
+
+    <div class="pagination-wrapper">
+
+
+      <!-- ======================================================= -->
+      <!-- PAGINATION INFO -->
+      <!-- ======================================================= -->
+
+      <div class="pagination-info">
+
+        Showing
+
+        <strong>
+          {{ startItem }}
+        </strong>
+
+        -
+
+        <strong>
+          {{ endItem }}
+        </strong>
+
+        of
+
+        <strong>
+          {{ filteredRequests.length }}
+        </strong>
+
+        Requests
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- PAGINATION CONTROLS -->
+      <!-- ======================================================= -->
+
+      <div class="pagination-controls">
+
+
+        <!-- PREVIOUS -->
+
+        <button
+          type="button"
+          class="pagination-btn"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+        >
+
+          <i class="pi pi-chevron-left"></i>
+
+        </button>
+
+
+        <!-- PAGE NUMBERS -->
+
+        @for (
+          page of pages;
+          track page
+        ) {
+
+          <button
+            type="button"
+            class="pagination-btn page-number"
+            [class.active]="currentPage === page"
+            (click)="goToPage(page)"
+          >
+
+            {{ page }}
+
+          </button>
+
+        }
+
+
+        <!-- NEXT -->
+
+        <button
+          type="button"
+          class="pagination-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+        >
+
+          <i class="pi pi-chevron-right"></i>
+
+        </button>
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- PAGE SIZE -->
+      <!-- ======================================================= -->
+
+      <div class="page-size">
+
+        <label for="pageSize">
+          Rows:
+        </label>
+
+        <select
+          id="pageSize"
+          class="form-select"
+          [value]="pageSize"
+          (change)="changePageSize($event)"
+        >
+
+          <option value="5">
+            5
+          </option>
+
+          <option value="10">
+            10
+          </option>
+
+          <option value="20">
+            20
+          </option>
+
+          <option value="50">
+            50
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

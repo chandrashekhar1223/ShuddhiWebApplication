@@ -1,0 +1,167 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <div>
+  <h2>{{ isEditMode ? 'Edit Society' : 'Add Society' }}</h2>
+
+  <p>
+    {{ isEditMode ? 'Update society details' : 'Enter society details' }}
+  </p>
+</div>
+    </div>
+
+    <button
+      type="button"
+      class="back-btn"
+      (click)="cancel()">
+
+      Back
+
+    </button>
+
+  </div>
+
+
+  <form
+    [formGroup]="societyForm"
+    (ngSubmit)="saveSociety()"
+    class="society-form">
+
+
+    <!-- Society Name -->
+    <div class="form-group">
+
+      <label>
+        Society Name <span>*</span>
+      </label>
+
+      <input
+        type="text"
+        formControlName="Society_Name"
+        placeholder="Enter society name"
+      />
+
+      <div
+        class="error"
+        *ngIf="
+          f['Society_Name'].touched &&
+          f['Society_Name'].invalid
+        ">
+
+        Society Name is required.
+
+      </div>
+
+    </div>
+
+
+    <!-- Pincode -->
+    <div class="form-group">
+
+      <label>
+        Pincode <span>*</span>
+      </label>
+
+      <input
+        type="text"
+        formControlName="Pincode"
+        maxlength="6"
+        placeholder="Enter pincode"
+      />
+
+      <div
+        class="error"
+        *ngIf="
+          f['Pincode'].touched &&
+          f['Pincode'].invalid
+        ">
+
+        <span *ngIf="f['Pincode'].errors?.['required']">
+          Pincode is required.
+        </span>
+
+        <span *ngIf="f['Pincode'].errors?.['pattern']">
+          Pincode must contain exactly 6 digits.
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Landmark -->
+    <div class="form-group">
+
+      <label>
+        Landmark
+      </label>
+
+      <input
+        type="text"
+        formControlName="Landmark"
+        placeholder="Enter landmark"
+      />
+
+    </div>
+
+
+    <!-- Sector -->
+    <div class="form-group">
+
+      <label>
+        Sector
+      </label>
+
+      <input
+        type="text"
+        formControlName="Sector"
+        placeholder="Enter sector"
+      />
+
+    </div>
+
+
+    <!-- Plot No -->
+    <div class="form-group">
+
+      <label>
+        Plot No.
+      </label>
+
+      <input
+        type="text"
+        formControlName="Plot_No"
+        placeholder="Enter plot number"
+      />
+
+    </div>
+
+
+    <!-- Buttons -->
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="cancel()">
+
+        Cancel
+
+      </button>
+
+     <button
+  type="submit"
+  class="save-btn"
+  [disabled]="societyForm.invalid">
+
+  {{ isEditMode ? 'Update Society' : 'Save Society' }}
+
+</button>
+
+    </div>
+
+  </form>
+
+</div>

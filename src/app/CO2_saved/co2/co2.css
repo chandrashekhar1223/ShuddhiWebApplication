@@ -1,0 +1,42 @@
+.dashboard-card {
+  width: 280px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-left: 808px;
+  margin-top: 59px;
+}
+.card-icon {
+  width: 60px;
+  height: 60px;
+  background: #eef4ff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.card-icon i {
+  font-size: 30px;
+  color: #2563eb;
+}
+
+.card-content h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.card-content p {
+  margin: 4px 0 0;
+  color: #666;
+}
+.user-icon {
+    height: 31px;
+    width: auto;
+}

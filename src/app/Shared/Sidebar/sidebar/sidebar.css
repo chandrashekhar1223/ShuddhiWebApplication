@@ -1,0 +1,200 @@
+@import "primeicons/primeicons.css";
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+
+  img {
+    width: 55px;
+    height: 55px;
+  }
+
+  h2 {
+    margin: 0;
+    color: #4b7f2b;
+    font-size: 28px;
+  }
+
+  small {
+    color: #666;
+  }
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+
+  img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+  }
+
+  h4 {
+    margin: 0;
+  }
+
+  span {
+    font-size: 12px;
+    color: #777;
+  }
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .3s;
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: #f2f8ef;
+      color: #4b7f2b;
+    }
+  }
+
+  .active {
+    background: #e8f2df;
+    color: #4b7f2b;
+    font-weight: 600;
+  }
+}
+
+.menu-title {
+  margin: 25px 0 15px;
+  font-size: 12px;
+  color: #888;
+  font-weight: 600;
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+.sidebar {
+    width: 270px;
+    height: 100vh;
+    background: #fff;
+    border-right: 1px solid #e5e7eb;
+    transition: all .3s ease;
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.top-section {
+    padding: 15px;
+}
+
+.toggle-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    background: #f4f4f4;
+    margin-bottom: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+        width: 233px;
+        height: 70px;
+    }
+}
+
+.logo-text {
+    white-space: nowrap;
+}
+
+.logo-text h2 {
+    margin: 0;
+    color: #4caf50;
+}
+
+.logo-text span {
+    font-size: 12px;
+    color: #888;
+}
+
+.menu {
+    list-style: none;
+    padding: 10px;
+}
+
+.menu li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 0 15px;
+    margin-bottom: 8px;
+    transition: .3s;
+}
+
+.menu li:hover {
+    background: #eef7ea;
+}
+
+.menu li.active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.menu li i {
+    font-size: 20px;
+    min-width: 25px;
+}
+
+.sidebar.collapsed .menu li {
+    justify-content: center;
+}
+
+.sidebar.collapsed .menu li span {
+    display: none;
+}

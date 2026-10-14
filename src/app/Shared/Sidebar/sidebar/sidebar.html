@@ -1,0 +1,91 @@
+
+<div class="sidebar" [class.collapsed]="isCollapsed">
+
+    
+    <div class="top-section">
+
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i class="pi"
+               [ngClass]="isCollapsed ? 'pi-angle-right' : 'pi-angle-left'">
+            </i>
+        </button>
+
+        <div class="logo">
+             <!-- Expanded Logo -->
+    <img *ngIf="!isCollapsed"
+         src="collapsedlogo.png"
+         alt="Full Logo">
+
+    <!-- Collapsed Logo -->
+    <img *ngIf="isCollapsed"
+         src="Layer_x0020_1 (1).png"
+         alt="Icon Logo">
+
+    <div class="logo-text" *ngIf="!isCollapsed">
+        <!--<h2>SriEco</h2>
+        <span>Recycle Platform</span>-->
+    </div>
+
+        </div>
+    </div>
+
+    <ul class="menu">
+
+        <li class="active">
+            <i class="pi pi-home"></i>
+            <span *ngIf="!isCollapsed">Dashboard</span>
+        </li>
+
+        <li routerLink="/societies" routerLinkActive="active">
+            <i class="pi pi-building"></i>
+            <span *ngIf="!isCollapsed">Societies</span>
+        </li>
+        
+       
+
+        <li>
+            <i class="pi pi-users"></i>
+            <span *ngIf="!isCollapsed">User Management</span>
+        </li>
+
+        <li>
+            <i class="pi pi-briefcase"></i>
+            <span *ngIf="!isCollapsed">Vendor Management</span>
+        </li>
+
+        <li routerLink="/Waste_Category" routerLinkActive="active">
+            <i class="pi pi-tags"></i>
+            <span *ngIf="!isCollapsed">Waste Categories</span>
+        </li>
+
+       <li routerLink="/pickup-requests" routerLinkActive="active">
+    <i class="pi pi-truck"></i>
+
+    <span *ngIf="!isCollapsed">
+        Pickup Requests
+    </span>
+</li>
+
+
+        <li>
+            <i class ="pi pi-gift"></i>
+            <span *ngIf="!isCollapsed">Redem Points</span>
+        </li>
+        <li>
+    <i class="pi pi-chart-line"></i>
+    <span *ngIf="!isCollapsed">Impact Management</span>
+</li>
+
+        <li>
+            <i class="pi pi-chart-bar"></i>
+            <span *ngIf="!isCollapsed">Reports</span>
+        </li>
+
+        <li>
+            <i class="pi pi-cog"></i>
+            <span *ngIf="!isCollapsed">Settings</span>
+        </li>
+
+    </ul>
+
+

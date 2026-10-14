@@ -1,0 +1,19 @@
+.main-content {
+  margin-left: 280px;
+  padding: 20px;
+}
+.content {
+    margin-left: 270px;
+    transition: all .3s;
+}
+app-get-users {
+  display: block;
+  margin-left: 400px;
+  margin-top: 57px;
+}
+app-getvendors{
+   display: block;
+  margin-left: 800px;
+
+
+}

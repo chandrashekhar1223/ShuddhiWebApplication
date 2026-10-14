@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
-
+import { CommonModule } from '@angular/common';
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({

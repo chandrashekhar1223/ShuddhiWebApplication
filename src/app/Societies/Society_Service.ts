@@ -1,0 +1,44 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+export interface Society {
+  id?: number;
+  society_Name?: string;
+  pincode?: string;
+  landmark?: string;
+  sector?: string;
+  plot_No?: string;
+  created_Date?: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SocietyService {
+
+  private apiUrl = 'https://localhost:7227/api/Society';
+
+  constructor(private http: HttpClient) {}
+
+getSocieties(): Observable<Society[]> {
+
+  return this.http.get<Society[]>(
+    `${this.apiUrl}/GetSocietes`
+  ).pipe(
+    tap(response => {
+      console.log('Society API Response:', response);
+    })
+  );
+}
+
+deleteSociety(id: number): Observable<any> {
+
+  return this.http.delete<any>(
+    `${this.apiUrl}/DeleteSociety/${id}`
+  );
+}
+
+
+}

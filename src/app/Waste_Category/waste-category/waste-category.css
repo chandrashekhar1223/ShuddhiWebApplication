@@ -1,0 +1,108 @@
+.waste-category {
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  margin-bottom: 20px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Waste Type Header */
+.waste-type-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  margin-bottom: 0;
+  padding: 15px 18px;
+  background: linear-gradient(135deg, #198754, #20c997);
+  color: #ffffff;
+}
+
+/* Number Circle */
+.waste-type-number {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #198754;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Waste Type ID */
+.waste-type-id {
+  margin-left: auto;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Sub Waste List */
+.sub-waste-list {
+  margin-left: 0;
+  padding: 8px 18px;
+  background: #f8fffb;
+}
+
+/* Sub Waste Item */
+.sub-waste-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid #dff3e8;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+/* Last item */
+.sub-waste-item:last-child {
+  border-bottom: none;
+}
+
+/* Sub Waste ID */
+.sub-waste-id {
+  min-width: 32px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #d1e7dd;
+  color: #146c43;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* Hover Effect */
+.sub-waste-item:hover {
+  background: #e9f8f0;
+  padding-left: 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Container Heading */
+.container h3 {
+  color: #146c43;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Loading */
+.text-muted {
+  color: #198754 !important;
+  font-weight: 500;
+}
+
+/* Error */
+.alert-danger {
+  border-radius: 8px;
+}
